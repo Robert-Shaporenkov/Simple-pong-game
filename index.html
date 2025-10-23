@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Simple Pong Game</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>Simple Pong — Adjustable AI</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Simple Pong Game</h1>
+  <header>
+    <h1>Simple Pong</h1>
+    <p>Left paddle: move your mouse (or touch). Right paddle: AI. Use the slider to make the AI easier or harder.</p>
+  </header>
+
+  <main>
     <canvas id="pong" width="800" height="500"></canvas>
-    <script src="script.js"></script>
+
+    <div class="controls">
+      <label for="difficulty">AI Difficulty: <strong id="difficultyLabel">35%</strong></label>
+      <input id="difficulty" type="range" min="0" max="100" step="1" value="35" />
+
+      <label class="inline">
+        <input id="showTarget" type="checkbox" />
+        Show AI target
+      </label>
+
+      <button id="resetBtn">Reset Scores</button>
+    </div>
+
+    <footer>
+      <div class="scores">
+        <span id="playerScore">0</span> — <span id="aiScore">0</span>
+      </div>
+      <small>Tip: open the console and call setAiDifficulty(value) with value 0..1 to change difficulty programmatically.</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
