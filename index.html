@@ -24,14 +24,15 @@
         Show AI target
       </label>
 
-      <button id="resetBtn">Reset Scores</button>
+      <button id="pauseBtn" type="button" aria-pressed="false">Pause</button>
+      <button id="resetBtn" type="button">Reset Scores</button>
     </div>
 
     <footer>
       <div class="scores">
         <span id="playerScore">0</span> — <span id="aiScore">0</span>
       </div>
-      <small>Tip: open the console and call setAiDifficulty(value) with value 0..1 to change difficulty programmatically.</small>
+      <small>Tip: press Space to toggle Pause/Resume.</small>
     </footer>
   </main>
 

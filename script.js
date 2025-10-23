@@ -1,4 +1,4 @@
-// Simple Pong with adjustable AI difficulty and on-screen slider
+// Simple Pong with adjustable AI difficulty, on-screen slider, and Pause/Resume button.
 // Drop index.html, style.css, script.js in the same folder and open index.html
 
 const canvas = document.getElementById('pong');
@@ -35,6 +35,7 @@ const difficultySlider = document.getElementById('difficulty');
 const difficultyLabel = document.getElementById('difficultyLabel');
 const showTargetCheckbox = document.getElementById('showTarget');
 const resetBtn = document.getElementById('resetBtn');
+const pauseBtn = document.getElementById('pauseBtn');
 const playerScoreEl = document.getElementById('playerScore');
 const aiScoreEl = document.getElementById('aiScore');
 
@@ -45,6 +46,9 @@ let aiDifficulty = Number(difficultySlider.value) / 100;
 let aiTargetY = aiY + PADDLE_HEIGHT / 2;
 let framesSinceLastTarget = 0;
 let aiIgnoreUntil = 0; // timestamp while AI "misses"
+
+// Pause state
+let isPaused = false;
 
 // Utility: clamp
 function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -238,11 +242,27 @@ function draw() {
     ctx.arc(CANVAS_WIDTH - 14, aiTargetY, 5, 0, Math.PI * 2);
     ctx.fill();
   }
+
+  // If paused, draw overlay
+  if (isPaused) {
+    ctx.fillStyle = "rgba(0,0,0,0.45)";
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    ctx.fillStyle = "rgba(255,255,255,0.95)";
+    ctx.font = "bold 48px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Paused", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 10);
+
+    ctx.font = "16px Arial";
+    ctx.fillText("Press Space or the Resume button to continue", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 24);
+  }
 }
 
 // Animation loop
 function gameLoop() {
-  update();
+  if (!isPaused) {
+    update();
+  }
   draw();
   requestAnimationFrame(gameLoop);
 }
@@ -250,7 +270,6 @@ function gameLoop() {
 // UI helpers
 function updateDifficultyUI() {
   difficultyLabel.textContent = Math.round(aiDifficulty * 100) + "%";
-  // ensure slider reflects the current value without triggering extra events
   difficultySlider.value = Math.round(aiDifficulty * 100);
 }
 
@@ -270,6 +289,29 @@ resetBtn.addEventListener('click', () => {
   aiScore = 0;
   updateScoreUI();
   resetBall();
+});
+
+// pause button behavior
+function setPaused(p) {
+  isPaused = !!p;
+  pauseBtn.setAttribute('aria-pressed', String(isPaused));
+  pauseBtn.textContent = isPaused ? 'Resume' : 'Pause';
+}
+
+pauseBtn.addEventListener('click', () => {
+  setPaused(!isPaused);
+});
+
+// spacebar toggles pause
+window.addEventListener('keydown', (e) => {
+  // ignore if typing in an input (rare here)
+  const active = document.activeElement;
+  if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+
+  if (e.code === 'Space') {
+    e.preventDefault();
+    setPaused(!isPaused);
+  }
 });
 
 // expose runtime setter

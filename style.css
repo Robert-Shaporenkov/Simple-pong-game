@@ -62,6 +62,16 @@ button{
   box-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
 
+button#resetBtn{
+  background: linear-gradient(180deg,#ffb0c6 0%, #ff8aa8 100%);
+  color:#2b0014;
+}
+
+button[aria-pressed="true"]{
+  background: linear-gradient(180deg,#ffd36b 0%, #ffb347 100%);
+  color:#2b1400;
+}
+
 footer{ display:flex; align-items:center; justify-content:space-between; max-width:800px; margin:8px auto 0; color:var(--muted); }
 .scores{ font-size:20px; font-weight:700; color:var(--white); }
 small{ color:var(--muted); }
